@@ -79,6 +79,7 @@
           awesome-vue
         </a>
       </li>
+      <router-link to="/fade">fade</router-link>
     </ul>
   </div>
 </template>

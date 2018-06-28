@@ -1,14 +1,15 @@
 <template>
   <div>
     <el-button @click="show = !show">Click Me</el-button>
-    <div style="display: flex;">
+    <div style="display: flex;vertical-align: middle;">
       <transition name="el-fade-in-linear">
-        <div v-show="show" class="transition-box">.el-fade-in-linear</div>
+        <div style="vertical-align: middle;" v-show="show" class="transition-box">.el-fade-in-linear</div>
       </transition>
       <transition name="el-fade-in">
         <div v-show="show" class="transition-box">.el-fade-in</div>
       </transition>
     </div>
+    <div style="vertical-align: middle;margin-top: 15px;" v-show="show" class="transition-box">.el-fade-in-linear2</div>
   </div>
 </template>
 
