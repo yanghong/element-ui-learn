@@ -79,7 +79,13 @@
           awesome-vue
         </a>
       </li>
-      <router-link to="/fade">fade</router-link>
+    </ul>
+    <h2>Element - UI _ examples</h2>
+    <ul>
+      <router-link to="/fade" style="margin-right: 20px;">fade</router-link>
+      <router-link to="/layout" style="margin-right: 20px;">layout</router-link>
+      <router-link to="/container" style="margin-right: 20px;">container</router-link>
+      <router-link to="/button" style="margin-right: 20px;">button</router-link>
     </ul>
   </div>
 </template>
@@ -89,7 +95,7 @@ export default {
   name: 'HelloWorld',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: 'Welcome to My Vue.js ! ^-^'
     }
   }
 }
