@@ -1,0 +1,621 @@
+
+import Vue from 'vue';
+import Router from 'vue-router';
+
+const _import = require('./_import_' + process.env.NODE_ENV);
+// in development env not use Lazy Loading,because Lazy Loading too many pages will cause webpack hot update too slow.so only in production use Lazy Loading
+
+/* layout */
+import Layout from '../views/layout/Layout';
+import Home_Layout from '../views/layout/HomeLayout';
+
+Vue.use(Router);
+
+/**
+* icon : the icon show in the sidebar
+* hidden : if `hidden:true` will not show in the sidebar
+* redirect : if `redirect:noredirect` will not redirect in the levelbar
+* noDropdown : if `noDropdown:true` will not has submenu in the sidebar
+* meta : `{ role: ['admin'] }`  will control the page role
+**/
+export const constantRouterMap = [
+{path: '/supplier/login', component: _import('login/index'), hidden: true},
+{path: '/404', component: _import('errorPage/404'), hidden: true},
+{path: '/401', component: _import('errorPage/401'), hidden: true},
+{
+path: '',
+component: Home_Layout,
+redirect: '/',
+hidden: true,
+children: [{path: '/', component: _import('dashboard/index')}]
+}
+];
+
+export default new Router({
+// mode: 'history', // 后端支持可开
+scrollBehavior: () => ({y: 0}),
+routes: constantRouterMap
+});
+
+export const asyncRouterMap = [
+{path: '/supplier/settings', hidden: true, component: _import('supplier/settings/index')},
+{
+path: '/purchase',
+name: '采销中心',
+meta: {roles: ['admin', 'sso_user']},
+component: Layout,
+icon: 'shop_car',
+children: [
+{
+path: '/purchase/order',
+component: _import('purchase/sales/index'),
+name: '采购代发',
+children: [
+{
+path: 'maintenance',
+component: _import('purchase/purchase_order/maintenance'),
+name: '采购合同维护'
+},
+{
+path: 'replace_inventory_list',
+component: _import('purchase/replace/replace_inventory_list'),
+name: '代发商家库存管控',
+meta: { roles: ['admin', 'purchase_assistant', 'marketing_director', 'buyer', 'purchase_leader', 'purchase_supporter'] }
+}
+]
+},
+{
+path: '/purchase/sales',
+component: _import('purchase/sales/index'),
+redirect: '/purchase/sales/sku_report/index',
+name: '销量分析',
+children: [
+{
+path: 'sku_report',
+component: _import('purchase/sales/sku_report/index'),
+name: 'SKU销量分析报表'
+}
+]
+},
+{
+path: '/purchase/replenishment',
+component: _import('purchase/replenishment/index'),
+name: '智能补货',
+meta: {roles: ['admin', 'sso_user']},
+children: [
+{
+path: 'list',
+component: _import('purchase/replenishment/pss/list'),
+name: '进销存报表'
+},
+{
+path: 'pss_details',
+component: _import('purchase/replenishment/pss/pss_details'),
+name: '创建采购单',
+hidden: true
+},
+{
+path: 'sku_details/:sku/:rundate',
+component: _import('purchase/replenishment/pss/sku_details'),
+name: '进销存详情页',
+hidden: true
+},
+{
+path: 'replenishment_list',
+component: _import('purchase/replenishment/pss/replenishment_list'),
+name: '补货单列表',
+},
+{
+path: 'temai_plans',
+component: _import('purchase/replenishment/pss/temai_list'),
+meta: { roles: ['developer'] },
+name: '特卖列表'
+},
+{
+path: 'activity_plans',
+component: _import('purchase/replenishment/pss/activity_list'),
+meta: { roles: ['developer'] },
+name: '活动列表'
+},
+{
+path: 'replenishment_detail/:replenishmentNo',
+component: _import('purchase/replenishment/pss/replenishment_detail'),
+// meta: { roles: ['developer'] },
+hidden: true,
+name: '智能补货详情'
+}
+]
+},
+{
+path: '/purchase/invoicing',
+component: _import('purchase/invoicing/index'),
+name: '进销存分析',
+hidden: true
+}
+]
+},
+
+{
+path: '/inventory',
+name: '库存中心',
+component: Layout,
+meta: {roles: ['admin', 'sso_user']},
+icon: 'inventory',
+children: [
+{
+path: '/inventory/query',
+component: _import('inventory/query/index'),
+name: '库存查询',
+hidden: false,
+children: [
+{ path: 'warehouse_inventory', name: '仓库库存',component: _import('inventory/query/warehouse/warehouse_list')},
+{ path: 'platform_inventory', name: '平台库存对比',  component: _import('inventory/query/compare/compare') }
+]
+},
+{
+path: '/inventory/board',
+component: _import('inventory/board/index'),
+name: '库存看板',
+hidden: true,
+children: [
+{path: 'statistics', name: '汇总分析'},
+{path: 'monitor', name: '仓库分时监控'},
+{path: 'capacity', name: '仓库分时产能'}
+]
+},
+{
+path: '/inventory/report',
+component: _import('inventory/report/index'),
+redirect: '/inventory/report/summary_distribution_list',
+name: '周转分析',
+children: [
+{path: 'statistics', name: '单品分析', component: _import('inventory/report/statistics')},
+{
+path: 'summary_distribution_list',
+name: '库存周转汇总',
+component: _import('inventory/report/summary_distribution_list')
+},
+{
+path: 'summary_structure_list',
+name: '库存结构汇总',
+component: _import('inventory/report/summary_structure_list')
+},
+{path: ':companyId/:sku', hidden: true, name: 'sku详情', component: _import('inventory/report/sku')}
+]
+},
+{
+path: '/inventory/shelflife',
+component: _import('inventory/shelflife/index'),
+name: '效期管控',
+children: [
+{ path: 'list', name: '基础报表', meta: { roles: ['admin', 'sso_user'] }, component: _import('inventory/shelflife/list') },
+{ path: 'risk_inventory_detail', name: '风险库存明细', meta: { roles: ['admin', 'sso_user'] }, component: _import('inventory/shelflife/risk_inventory_detail') },
+{ path: 'risk_inventory_summary', name: '风险库存汇总', meta: { roles: ['admin', 'sso_user'] }, component: _import('inventory/shelflife/risk_inventory_summary') },
+{ path: 'period_inventory_summary', name: '环节汇总', meta: { roles: ['admin', 'sso_user'] }, component: _import('inventory/shelflife/period_inventory_summary') }
+]
+},
+{
+path: '/inventory/manager',
+component: _import('inventory/manager/index'),
+redirect: '/inventory/manager/high_inventory',
+meta: {roles: ['sso_user']},
+name: '库存处理',
+children: [
+{ path: 'high_inventory', name: '库存处理', meta: { roles: ['sso_user'] }, component: _import('inventory/manager/high_inventory') },
+{ path: 'markdown_sale/:companyId/:sku', name: 'markdown_sale', hidden: true, meta: { roles: ['sso_user'] }, component: _import('inventory/manager/markdown_sale') },
+{ path: 'history/:companyId/:sku', name: 'history', hidden: true, meta: { roles: ['sso_user'] }, component: _import('inventory/manager/history') },
+{ path: 'audit_detail/:msId', name: '审核详情', hidden: true, meta: { roles: ['sso_user'] }, component: _import('inventory/manager/audit_detail') },
+{ path: 'sku_operation_detail', name: '降价审核', meta: { roles: ['sso_user'] }, component: _import('inventory/manager/sku_operation_detail') },
+{ path: 'ms_sku_statistics', name: '降价明细统计', meta: { roles: ['sso_user'] }, component: _import('inventory/manager/ms_sku_statistics') },
+{ path: 'markdown_sale_report', name: 'SKU销售报表', meta: { roles: ['sso_user'] }, component: _import('inventory/manager/markdown_sale_report') }
+]
+},
+{
+path: 'turnover_detail/:sku/:snapshotDate',
+name: 'SKU库存周转明细',
+hidden: true,
+meta: {roles: ['admin', 'sso_user']},
+component: _import('inventory/shelflife/turnover_detail')
+}
+]
+},
+{
+path: '/cost',
+name: '成本中心',
+component: Layout,
+meta: {roles: ['admin', 'sso_user', 'partner']},
+icon: 'dollar',
+children: [
+{
+path: '/cost/performance',
+component: _import('cost/performance/index'),
+name: '履约分析',
+hidden: false,
+children: [
+{ path: 'cost_data', name: '费用数据',component: _import('cost/performance/cost_data')},
+{ path: 'express_cost_data', name: '快递费用结算', component: _import('cost/performance/express_cost_data') }
+]
+},
+{
+path: '/cost/payment',
+name: '赔付结算',
+component: _import('cost/payment/index'),
+children: [
+{path: 'list', name: '赔付单列表', meta: {roles: ['partner']}, component: _import('cost/payment/list')},
+{
+path: 'internal_list',
+name: '赔付单列表',
+meta: {roles: ['admin', 'sso_user']},
+component: _import('cost/payment/internal_list')
+},
+{
+path: 'view/:compensateNo',
+hidden: true,
+meta: {roles: ['partner']},
+component: _import('cost/payment/view')
+},
+{
+path: 'internal_view/:compensateNo',
+hidden: true,
+meta: {roles: ['admin', 'sso_user']},
+component: _import('cost/payment/internal_view')
+}
+]
+},
+{
+path: '/cost/price',
+name: '价格管理',
+component: _import('cost/price/index'),
+meta: {
+roles: ['admin', 'sso_user']
+},
+children: [
+{
+path: 'check',
+component: _import('cost/price/check'),
+name: '价格校验设置'
+}
+]
+}
+]
+},
+
+{
+path: '/supplier',
+name: '供应商协同',
+component: Layout,
+icon: 'supplier',
+children: [
+{
+path: '/supplier/bidding',
+component: _import('supplier/bidding/index'),
+redirect: '/supplier/bidding/publish',
+name: '采购竞价',
+children: [
+{
+path: 'publish',
+name: '发布采购商品',
+meta: {roles: ['admin', 'sso_user']},
+component: _import('supplier/bidding/publish')
+},
+{path: 'list', name: '商品报价列表', meta: {roles: ['supplier']}, component: _import('supplier/bidding/list')},
+{
+path: 'view/:id',
+hidden: true,
+meta: {roles: ['sso_user', 'admin']},
+component: _import('supplier/bidding/view')
+}
+]
+},
+{path: 'settings', meta: {roles: ['supplier']}, redirect: '/supplier/settings', name: '信息维护'}
+]
+},
+
+{
+path: '/order',
+name: '订单履约',
+component: Layout,
+icon: 'price',
+meta: {
+roles: ['admin', 'sso_user']
+},
+children: [
+{
+path: '/order/lifecycle',
+component: _import('order/lifecycle/index'),
+name: '订单生命周期',
+children: [
+{
+path: 'report',
+component: _import('order/lifecycle/report'),
+name: '报表查询'
+},
+{
+path: 'ageing',
+component: _import('order/lifecycle/ageing'),
+name: '时效需求'
+},
+{
+path: 'alarm',
+component: _import('order/lifecycle/alarm'),
+name: '预警配置'
+}
+]
+},
+{
+path: 'flow_report',
+component: _import('order/flow/report'),
+name: '订单流向统计'
+},
+{
+path: 'package_cost',
+component: _import('order/cost/index'),
+name: '履约规划计算'
+},
+{
+path: 'sales_volume',
+component: _import('order/salesVolume/salesVolume'),
+name: '超件订单查询'
+},
+{
+path: '/order/combinedProduct',
+component: _import('order/combinedProduct/index'),
+name: '组合商品管控',
+children: [
+{
+path: 'report',
+component: _import('order/combinedProduct/report'),
+name: '报表查询'
+},
+{
+path: 'config',
+component: _import('order/combinedProduct/config'),
+name: '预警配置'
+}
+]
+},
+{
+path: '/order/box',
+component: _import('order/box/index'),
+name: '包材管理',
+children: [
+{
+path: 'package_box_plan',
+component: _import('order/box/package_box_plan'),
+name: '包材规划'
+},
+{
+path: 'package_box_report',
+component: _import('order/box/package_box_report'),
+name: '包材报表'
+}
+]
+}
+]
+},
+
+{
+path: '/warehouse_logistics',
+name: '仓储物流',
+component: Layout,
+icon: 'inventory',
+meta: {
+roles: ['admin', 'sso_user']
+},
+children: [
+{
+path: 'warehouse_kanban',
+component: _import('reportcenter/warehouse_kanban/warehouse_kanban'),
+name: '仓库看板'
+},
+{
+path: 'warehouse_hourly_monitor',
+component: _import('reportcenter/warehouse_kanban/warehouse_hourly_monitor'),
+name: '仓库分时监控'
+},
+{
+path: 'warehouse_hourly_shipping_amount',
+component: _import('reportcenter/warehouse_kanban/warehouse_hourly_shipping_amount'),
+name: '仓库分时产能'
+},
+{
+path: '/delivery',
+name: '入仓管理',
+component: _import('delivery/index'),
+meta: {
+roles: ['admin', 'sso_user']
+},
+children: [
+{
+path: 'plan',
+component: _import('delivery/plan/index'),
+name: '到货计划管理'
+},
+{
+path: 'plan/add',
+name: '新增到货计划',
+hidden: true,
+component: _import('delivery/plan/add')
+},
+{
+path: 'plan/detail/:ordId',
+name: '到货计划详情',
+hidden: true,
+component: _import('delivery/plan/detail')
+},
+{
+path: 'plan/item_debug/:dptId',
+name: '到货计划大数据计算依赖',
+hidden: true,
+component: _import('delivery/plan/item_debug')
+},
+{
+path: 'plan/split_detail/:dptId',
+name: '到货单拆分明细',
+hidden: true,
+component: _import('delivery/plan/split_detail')
+},
+{
+path: 'warehouse_info_config',
+component: _import('configs/warehouse/warehouseInfo'),
+name: '仓库信息配置'
+},
+{
+path: 'express_price_config',
+component: _import('configs/expressPriceConfig/expressPriceConfig'),
+name: '快递价格配置'
+},
+{
+path: 'province_time_efficiency_config',
+component: _import('configs/timeEfficiency/provinceTimeEfficiency'),
+name: '省份时效标准配置'
+},
+{
+path: 'small_warehouse_condition_config',
+component: _import('configs/warehouse/smallWarehouseConditionConfig'),
+name: '定制仓条件配置'
+},
+{
+path: 'small_warehouse_sku_info/:warehouseNo',
+component: _import('configs/warehouse/smallWarehouseSkuInfo'),
+name: '定制仓SKU清单'
+},
+{
+path: 'warehouse_info_snapshot',
+meta: {
+roles: ['admin','supply_chain']
+},
+component: _import('configs/warehouse/warehouseInfoSnapshot'),
+name: '仓库快照信息'
+}
+]
+}
+]
+},
+
+{
+path: '/ticket',
+name: '咨询工单',
+component: Layout,
+icon: 'price',
+meta: {
+roles: ['admin', 'sso_user', 'partner']
+},
+children: [
+{
+path: 'consult',
+component: _import('ticket/consult/list'),
+name: '服务咨询工单'
+},
+{
+path: 'consult/view/:ticketNo',
+component: _import('ticket/consult/view'),
+name: '服务咨询工单详情',
+hidden: true
+},
+{
+path: 'feedback',
+component: _import('ticket/feedback/list'),
+name: '异常反馈'
+},
+{
+path: 'feedback/view/:ticketNo',
+component: _import('ticket/feedback/view'),
+name: '反馈单详情',
+hidden: true
+}
+]
+},
+
+{
+path: '/settings',
+name: '基础设置',
+component: Layout,
+icon: 'shouce',
+meta: {
+roles: ['developer']
+},
+children: [
+{
+path: '/settings/auth',
+name: '权限管理',
+component: _import('settings/auth/index'),
+children: [
+{
+path: 'sso_user',
+meta: {
+roles: ['admin']
+},
+component: _import('settings/auth/sso_user_manage'),
+name: '内部员工'
+},
+{
+path: 'supplier_user',
+meta: {
+roles: ['admin']
+},
+component: _import('settings/auth/supplier_user_manage'),
+name: '供应商'
+},
+{
+path: 'partner',
+component: _import('settings/auth/partner_manage'),
+name: '合作方'
+}
+]
+},
+{
+path: 'sop_config',
+name: '参数配置',
+component: _import('settings/sop_config/index')
+},
+{
+path: 'promotional_calendar',
+name: '促销日历',
+component: _import('settings/promotional_calendar/promotional_calendar')
+}
+]
+},
+
+{
+path: '/charts',
+name: '图表',
+component: Layout,
+icon: 'tubiao',
+hidden: true,
+meta: {
+roles: ['developer']
+},
+children: [
+{
+path: 'index',
+component: _import('charts/index'),
+name: '所有图表'
+}
+]
+},
+
+{
+path: '/tasks',
+name: '任务中心',
+component: Layout,
+icon: 'purchase_order',
+meta: {
+roles: ['admin', 'sso_user']
+},
+children: [
+{
+path: 'exports',
+component: _import('tasks/exports/list'),
+name: '导出任务列表'
+},
+{
+path: 'imports',
+component: _import('tasks/imports/list'),
+name: '导入任务列表'
+}
+]
+},
+
+{path: '*', redirect: '/404', hidden: true}
+];
