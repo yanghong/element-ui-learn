@@ -18,14 +18,41 @@
       <el-col :span="6"><div class="grid-content bg-purple"></div></el-col>
       <el-col :span="6"><div class="grid-content bg-purple-light"></div></el-col>
     </el-row>
-  <el-row>
-    <el-col :span="4"><div class="grid-content bg-purple"></div></el-col>
-    <el-col :span="4"><div class="grid-content bg-purple-light"></div></el-col>
+  <el-row :gutter="20">
+    <el-col :span="4"><div class="grid-content bg-purple-light">gutter 20</div></el-col>
     <el-col :span="4"><div class="grid-content bg-purple"></div></el-col>
     <el-col :span="4"><div class="grid-content bg-purple-light"></div></el-col>
     <el-col :span="4"><div class="grid-content bg-purple"></div></el-col>
     <el-col :span="4"><div class="grid-content bg-purple-light"></div></el-col>
   </el-row>
+  <el-row :gutter="20">
+    <el-col :span="12" :offset="6"><div class="grid-content bg-purple">offset</div></el-col>
+  </el-row>
+    <el-row type="flex" class="row-bg">
+      <el-col :span="6"><div class="grid-content bg-purple">flex</div></el-col>
+      <el-col :span="6"><div class="grid-content bg-purple-light"></div></el-col>
+      <el-col :span="6"><div class="grid-content bg-purple"></div></el-col>
+    </el-row>
+    <el-row type="flex" class="row-bg" justify="center">
+      <el-col :span="6"><div class="grid-content bg-purple">flex center</div></el-col>
+      <el-col :span="6"><div class="grid-content bg-purple-light"></div></el-col>
+      <el-col :span="6"><div class="grid-content bg-purple"></div></el-col>
+    </el-row>
+    <el-row type="flex" class="row-bg" justify="end">
+      <el-col :span="6"><div class="grid-content bg-purple">flex end</div></el-col>
+      <el-col :span="6"><div class="grid-content bg-purple-light"></div></el-col>
+      <el-col :span="6"><div class="grid-content bg-purple"></div></el-col>
+    </el-row>
+    <el-row type="flex" class="row-bg" justify="space-between">
+      <el-col :span="6"><div class="grid-content bg-purple">flex space-between</div></el-col>
+      <el-col :span="6"><div class="grid-content bg-purple-light"></div></el-col>
+      <el-col :span="6"><div class="grid-content bg-purple"></div></el-col>
+    </el-row>
+    <el-row type="flex" class="row-bg" justify="space-around">
+      <el-col :span="6"><div class="grid-content bg-purple">flex space-around</div></el-col>
+      <el-col :span="6"><div class="grid-content bg-purple-light"></div></el-col>
+      <el-col :span="6"><div class="grid-content bg-purple"></div></el-col>
+    </el-row>
   </div>
 </template>
 
