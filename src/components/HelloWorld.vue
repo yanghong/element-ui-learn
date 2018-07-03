@@ -86,6 +86,7 @@
       <router-link to="/layout" style="margin-right: 20px;">layout</router-link>
       <router-link to="/container" style="margin-right: 20px;">container</router-link>
       <router-link to="/button" style="margin-right: 20px;">button</router-link>
+      <router-link to="/cards" style="margin-right: 20px;">cards</router-link>
     </ul>
   </div>
 </template>

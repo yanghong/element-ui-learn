@@ -5,6 +5,7 @@ import fade from '@/views/fade'
 import layout from '@/views/layout'
 import container from '@/views/container'
 import button from '@/views/button'
+import cards from '@/views/cards'
 
 Vue.use(Router)
 
@@ -34,6 +35,11 @@ export default new Router({
       path: '/button',
       name: 'button',
       component: button
+    },
+    {
+      path: '/cards',
+      name: 'cards',
+      component: cards
     }
   ]
 })
