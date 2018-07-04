@@ -39,12 +39,14 @@
     height: 20em;
     position: relative;
   }
-
+  :root {
+    --hue: calc(360deg / 8 * var(--n));
+  }
   .cards span {
     position: absolute;
     width: 10em;
     height: 3em;
-    background-color: hsl(calc(360deg / 8 * var(--n)), 80%, 70%);
+    background-color: hsl(210, 80%, 70%);
     top: calc(50% - 3em / 2);
     border: 0.2em solid dimgray;
     border-radius: 0.3em 0.8em 0.8em 0.3em;
