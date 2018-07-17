@@ -1,5 +1,6 @@
 <template>
   <div class="hello">
+    <img src="../assets/logo.png">
     <h1>{{ msg }}</h1>
     <h2>Essential Links</h2>
     <ul>
@@ -87,6 +88,7 @@
       <router-link to="/container" style="margin-right: 20px;">container</router-link>
       <router-link to="/button" style="margin-right: 20px;">button</router-link>
       <router-link to="/cards" style="margin-right: 20px;">cards</router-link>
+      <router-link to="/table" style="margin-right: 20px;">table</router-link>
     </ul>
   </div>
 </template>

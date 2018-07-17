@@ -6,6 +6,7 @@ import layout from '@/views/layout'
 import container from '@/views/container'
 import button from '@/views/button'
 import cards from '@/views/cards'
+import table from '@/views/table'
 
 Vue.use(Router)
 
@@ -40,6 +41,11 @@ export default new Router({
       path: '/cards',
       name: 'cards',
       component: cards
+    },
+    {
+      path: '/table',
+      name: 'table',
+      component: table
     }
   ]
 })

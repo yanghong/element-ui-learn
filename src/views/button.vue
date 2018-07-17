@@ -1,7 +1,10 @@
 <template>
     <div>
-      <h1>基础用法</h1>
       <el-row>
+        <div align="center">
+          <h1>element-ui button component</h1>
+        </div>
+        <h1>基础用法</h1>
         <el-button>默认按钮</el-button>
         <el-button type="primary">主要按钮</el-button>
         <el-button type="success">成功按钮</el-button>
@@ -88,7 +91,6 @@
         <el-button size="small" round>小型按钮</el-button>
         <el-button size="mini" round>超小按钮</el-button>
       </el-row>
-      <h1></h1>
     </div>
 </template>
 
@@ -99,5 +101,8 @@ export default {
 </script>
 
 <style scoped>
-
+ .el-button {
+   margin-right: 5px;
+   margin-bottom: 5px;
+ }
 </style>
