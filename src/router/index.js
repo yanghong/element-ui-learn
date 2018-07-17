@@ -7,6 +7,8 @@ import container from '@/views/container'
 import button from '@/views/button'
 import cards from '@/views/cards'
 import table from '@/views/table'
+import expandGoods1 from '@/views/expandGoods1'
+import BUTTONchange from '@/views/BUTTONchange'
 
 Vue.use(Router)
 
@@ -46,6 +48,16 @@ export default new Router({
       path: '/table',
       name: 'table',
       component: table
+    },
+    {
+      path: '/expandGoods1',
+      name: 'expandGoods1',
+      component: expandGoods1
+    },
+    {
+      path: '/BUTTONchange',
+      name: 'BUTTONchange',
+      component: BUTTONchange
     }
   ]
 })
